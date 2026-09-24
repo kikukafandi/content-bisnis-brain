@@ -1,0 +1,3107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quantum Computer — YouTube Visual</title>
+
+    <!-- MONTSERRAT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --background: #090a0d;
+            --surface: #111318;
+
+            --text: #f5f5f2;
+            --muted: #90949e;
+
+            --accent: #ff4db8;
+            --accent-soft: rgba(255, 77, 184, 0.16);
+
+            --line: rgba(255, 255, 255, 0.10);
+
+            --danger: #ff786d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: #050506;
+            color: var(--text);
+
+            font-family: "Montserrat", Arial, sans-serif;
+
+            overflow: hidden;
+        }
+
+        button,
+        select,
+        input {
+            font-family: inherit;
+        }
+
+        /* ==========================
+           APP
+        ========================== */
+
+        #app {
+            width: 100%;
+            height: 100dvh;
+
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+        }
+
+        /* ==========================
+           TOOLBAR
+        ========================== */
+
+        .toolbar {
+            min-height: 62px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 18px;
+
+            background: #0b0c0f;
+
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            font-weight: 700;
+
+            margin-right: auto;
+
+            font-size: 13px;
+
+            letter-spacing: -0.02em;
+        }
+
+        .brand span {
+            color: var(--accent);
+        }
+
+        label {
+            font-size: 11px;
+
+            font-weight: 500;
+
+            color: var(--muted);
+        }
+
+        select,
+        button {
+            border: 1px solid var(--line);
+
+            background: #15171c;
+
+            color: var(--text);
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+
+            transition:
+                background 0.2s,
+                border 0.2s,
+                transform 0.15s;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:hover,
+        select:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            background: #191c22;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        /* ==========================
+           STAGE WRAPPER
+        ========================== */
+
+        .stage-wrapper {
+            min-height: 0;
+
+            display: grid;
+            place-items: center;
+
+            padding: 18px;
+
+            overflow: hidden;
+        }
+
+        /* ==========================
+           YOUTUBE CANVAS
+        ========================== */
+
+        .stage {
+            width: min(
+                100%,
+                calc((100dvh - 140px) * 16 / 9)
+            );
+
+            aspect-ratio: 16 / 9;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 50% 45%,
+                    #11141a 0,
+                    #090a0d 55%,
+                    #070709 100%
+                );
+
+            box-shadow:
+                0 30px 100px rgba(0, 0, 0, 0.65);
+
+            isolation: isolate;
+        }
+
+        .stage::before {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            pointer-events: none;
+
+            background-image:
+                linear-gradient(
+                    rgba(255,255,255,0.015) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.015) 1px,
+                    transparent 1px
+                );
+
+            background-size: 60px 60px;
+
+            mask-image:
+                radial-gradient(
+                    circle at center,
+                    black,
+                    transparent 80%
+                );
+
+            z-index: 0;
+        }
+
+        canvas {
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            z-index: 1;
+        }
+
+        /* ==========================
+           TEXT OVERLAY
+        ========================== */
+
+        .overlay {
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 2;
+
+            pointer-events: none;
+
+            padding:
+                clamp(32px, 5vw, 76px);
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chapter {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: rgba(255,255,255,.55);
+
+            font-size:
+                clamp(8px, 0.75vw, 12px);
+
+            font-weight: 600;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+        }
+
+        .chapter::before {
+            content: "";
+
+            width: 25px;
+            height: 2px;
+
+            background: var(--accent);
+
+            border-radius: 100px;
+        }
+
+        .scene-number {
+            position: absolute;
+
+            right:
+                clamp(32px, 5vw, 76px);
+
+            top:
+                clamp(32px, 5vw, 76px);
+
+            font-size:
+                clamp(8px, 0.75vw, 12px);
+
+            font-weight: 600;
+
+            color: rgba(255,255,255,.35);
+        }
+
+        /* Bottom text */
+
+        .copy {
+            margin-top: auto;
+
+            width: min(630px, 67%);
+        }
+
+        .title {
+            font-size:
+                clamp(28px, 4vw, 67px);
+
+            line-height: 0.98;
+
+            letter-spacing: -0.055em;
+
+            font-weight: 700;
+        }
+
+        .description {
+            margin-top:
+                clamp(12px, 1.4vw, 22px);
+
+            max-width: 580px;
+
+            font-size:
+                clamp(10px, 1.05vw, 16px);
+
+            line-height: 1.6;
+
+            font-weight: 400;
+
+            color: rgba(245,245,242,.62);
+        }
+
+        /* ==========================
+           BOTTOM CONTROLS
+        ========================== */
+
+        .controls {
+            min-height: 62px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 10px 18px;
+
+            background: #0b0c0f;
+
+            border-top: 1px solid var(--line);
+        }
+
+        .timeline-group {
+            flex: 1;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-inline: 8px;
+        }
+
+        #timeline {
+            width: 100%;
+
+            accent-color: var(--accent);
+        }
+
+        .time {
+            min-width: 84px;
+
+            text-align: right;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .sound-controls {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        #backsound[aria-pressed="true"] {
+            border-color: rgba(255, 77, 184, 0.45);
+            background: var(--accent-soft);
+        }
+
+        #volume {
+            width: 72px;
+            accent-color: var(--accent);
+        }
+
+        /* ==========================
+           CLEAN VIDEO MODE
+        ========================== */
+
+        body.clean #app {
+            grid-template-rows: 1fr;
+        }
+
+        body.clean .toolbar,
+        body.clean .controls {
+            display: none;
+        }
+
+        body.clean .stage-wrapper {
+            padding: 0;
+        }
+
+        body.clean .stage {
+            width: min(
+                100vw,
+                calc(100dvh * 16 / 9)
+            );
+
+            max-height: 100dvh;
+
+            box-shadow: none;
+        }
+
+        /* ==========================
+           GREENSCREEN
+        ========================== */
+
+        .stage.green {
+            background: #00b140;
+        }
+
+        .stage.green::before {
+            display: none;
+        }
+
+        .stage.green .overlay {
+            display: none;
+        }
+
+        .stage.green canvas {
+            filter: none;
+        }
+
+        .stage.transparent {
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .stage.transparent::before {
+            display: none;
+        }
+
+        /* ==========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 750px) {
+
+            .brand {
+                display: none;
+            }
+
+            .toolbar,
+            .controls {
+                padding: 7px;
+            }
+
+            label {
+                display: none;
+            }
+
+            .stage-wrapper {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- ==========================
+         TOOLBAR
+    =========================== -->
+
+    <header class="toolbar">
+
+        <div class="brand">
+            QUANTUM <span>VISUAL</span>
+        </div>
+
+        <label>
+            Part
+            <select id="part"></select>
+        </label>
+
+        <label>
+            Scene
+            <select id="scene"></select>
+        </label>
+
+        <label>
+            Background
+            <select id="background">
+                <option value="dark">
+                    Dark
+                </option>
+
+                <option value="green">
+                    Green Screen
+                </option>
+
+                <option value="transparent">
+                    Transparent
+                </option>
+            </select>
+        </label>
+
+        <label>
+            Ratio
+            <select id="ratio">
+                <option value="16 / 9" selected>16:9</option>
+                <option value="9 / 16">9:16</option>
+                <option value="1 / 1">1:1</option>
+            </select>
+        </label>
+
+        <button id="loop" aria-pressed="false">Loop: Off</button>
+
+        <button id="clean">
+            Clean Mode
+        </button>
+
+        <button id="full">
+            Fullscreen
+        </button>
+
+    </header>
+
+
+    <!-- ==========================
+         VIDEO STAGE
+    =========================== -->
+
+    <main class="stage-wrapper">
+
+        <section
+            class="stage"
+            id="stage"
+        >
+
+            <canvas id="canvas"></canvas>
+
+            <div class="overlay">
+
+                <div
+                    class="chapter"
+                    id="chapter"
+                ></div>
+
+                <div
+                    class="scene-number"
+                    id="sceneNumber"
+                ></div>
+
+                <div class="copy">
+
+                    <div
+                        class="title"
+                        id="title"
+                    ></div>
+
+                    <div
+                        class="description"
+                        id="description"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================
+         PLAYER
+    =========================== -->
+
+    <footer class="controls">
+
+        <button id="prev">
+            ←
+        </button>
+
+        <button id="play">
+            Play
+        </button>
+
+        <button id="restart">
+            Restart
+        </button>
+
+        <button id="next">
+            →
+        </button>
+
+        <div class="timeline-group">
+
+            <input
+                id="timeline"
+                type="range"
+                min="0"
+                max="1000"
+                value="0"
+            >
+
+            <div
+                class="time"
+                id="time"
+            >
+                00:00 / 00:00
+            </div>
+
+        </div>
+
+        <div class="sound-controls">
+            <button id="backsound" aria-pressed="false">Backsound: Off</button>
+            <input id="volume" type="range" min="0" max="100" value="18" aria-label="Backsound volume">
+        </div>
+
+        <select id="speed">
+
+            <option value=".5">
+                0.5×
+            </option>
+
+            <option value="1" selected>
+                1×
+            </option>
+
+            <option value="1.5">
+                1.5×
+            </option>
+
+            <option value="2">
+                2×
+            </option>
+
+        </select>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+const parts = [
+    {
+        name: "Komputer kuantum itu apa?",
+        scenes: [
+            { id: "p1-s1-riset", title: "Dua minggu cari pijakan.", description: "Tab, catatan, dan sumber abstrak—bukan screenshot sumber asli.", visual: "research", duration: 14 },
+            { id: "p1-s2-klaim", title: "Klaim populer terdengar meyakinkan.", description: "Tapi apakah penjelasannya benar?", visual: "claims", duration: 13 },
+            { id: "p1-s3-fondasi-bit", title: "Mulai dari fondasi: bit.", description: "Unit informasi paling dasar pada komputer klasik.", visual: "bitFoundation", duration: 12 },
+            { id: "p1-s4-sakelar", title: "OFF atau ON.", description: "Dua keadaan fisik ditafsirkan sebagai 0 atau 1.", visual: "switchBit", duration: 12 },
+            { id: "p1-s5-tegangan", title: "Tegangan dibaca sebagai bit.", description: "Rentang rendah dan tinggi dipetakan ke nilai digital.", visual: "voltage", duration: 13 },
+            { id: "p1-s6-skala-bit", title: "Bit yang sama, hasilnya beragam.", description: "Angka, teks, piksel, musik, game, browser, sampai video.", visual: "bitScale", duration: 15 },
+            { id: "p1-s7-not", title: "NOT membalik nilai.", description: "0 menjadi 1, dan 1 menjadi 0.", visual: "notGate", duration: 11 },
+            { id: "p1-s8-and", title: "AND butuh dua input 1.", description: "Hanya 1 AND 1 yang menghasilkan 1.", visual: "andTable", duration: 14 },
+            { id: "p1-s9-cpu", title: "Gate sederhana disusun.", description: "Gabungannya membentuk circuit, lalu bagian dari CPU.", visual: "gateToCpu", duration: 14 },
+            { id: "p1-s10-transisi", title: "Lalu model komputasinya berubah.", description: "Dari gate klasik menuju quantum circuit dan qubit.", visual: "classicQuantum", duration: 14 },
+            { id: "p1-s11-miskonsepsi", title: "Bukan upgrade kecepatan universal.", description: "Tugas harian tidak otomatis lebih cepat hanya karena kuantum.", visual: "misconception", duration: 14 },
+            { id: "p1-s12-konseptual", title: "Atom dan molekul itu contoh konseptual.", description: "Visualisasi konseptual, bukan gambaran literal perangkat.", visual: "conceptMatter", duration: 14 },
+            { id: "p1-s13-data", title: "Representasi klasik bisa membengkak.", description: "Saat sistem bertambah, data yang perlu dilacak dapat tumbuh cepat.", visual: "dataGrowth", duration: 14 },
+            { id: "p1-s14-cpu-qpu", title: "CPU dan QPU punya peran berbeda.", description: "QPU lebih masuk akal sebagai alat khusus, bukan pengganti semua komputer.", visual: "cpuQpu", duration: 14 },
+            { id: "p1-s15-syarat", title: "Percepatan butuh tiga hal.", description: "Masalah yang cocok, algoritma yang tepat, dan hardware yang mampu.", visual: "requirements", duration: 15 },
+            { id: "p1-s16-pertanyaan", title: "Lebih cepat untuk masalah apa?", description: "Itu pertanyaan yang lebih berguna daripada sekadar ‘lebih cepat’. ", visual: "fasterWhat", duration: 13 },
+            { id: "p1-s17-superposisi", title: "Qubit itu 0 dan 1 sekaligus?", description: "Kalimat populer ini perlu dibongkar lewat superposisi dan pengukuran.", visual: "superpositionQuestion", duration: 14 },
+            { id: "p1-s18-pengukuran", title: "Saat diukur: hasilnya 0 atau 1.", description: "Bloch sphere jadi teaser untuk memahami keadaan sebelum pengukuran.", visual: "measureTeaser", duration: 15 },
+            { id: "p1-s19-final", title: "BIT 0 | 1 → QUBIT", description: "Fondasi klasik selesai. Berikutnya: qubit dan pengukuran.", visual: "bitToQubit", duration: 12 }
+        ]
+    },
+    {
+        name: "Qubit dan pengukuran",
+        scenes: [
+            { id: "p2-s1-psi", title: "Keadaan |ψ⟩.", description: "|ψ⟩ = α|0⟩ + β|1⟩", visual: "psi", duration: 16 },
+            { id: "p2-s2-amplitudo", title: "Amplitudo dan probabilitas.", description: "Peluang pengukuran diperoleh dari |α|² dan |β|².", visual: "probability", duration: 18 },
+            { id: "p2-s3-bloch", title: "Bloch sphere.", description: "Peta matematika untuk keadaan murni satu qubit.", visual: "bloch", duration: 18 },
+            { id: "p2-s4-superposisi-measurement", title: "Superposisi dan measurement.", description: "Satu pengukuran memberi satu hasil klasik; distribusi perlu banyak shot.", visual: "measurement", duration: 18 }
+        ]
+    },
+    {
+        name: "Quantum gates dan circuit",
+        scenes: [
+            { id: "p3-s1-xyz", title: "X, Y, dan Z.", description: "Gate mengubah amplitudo dan fase keadaan qubit.", visual: "gates", duration: 18 },
+            { id: "p3-s2-hadamard", title: "Hadamard.", description: "H membentuk superposisi, tetapi bukan tombol acak.", visual: "hadamard", duration: 17 },
+            { id: "p3-s3-fase", title: "Fase.", description: "Fase relatif menentukan bagaimana amplitudo berinterferensi.", visual: "phase", duration: 18 },
+            { id: "p3-s4-circuit", title: "Aliran circuit.", description: "Siapkan keadaan, jalankan gate, ukur, lalu ulangi.", visual: "circuit", duration: 18 }
+        ]
+    },
+    {
+        name: "Entanglement dan interferensi",
+        scenes: [
+            { id: "p4-s1-cnot", title: "CNOT.", description: "Target dibalik jika kontrol berada pada keadaan basis satu.", visual: "circuit", duration: 18 },
+            { id: "p4-s2-bell", title: "Bell state.", description: "H dan CNOT dapat membentuk keadaan bersama dua qubit.", visual: "hadamard", duration: 18 },
+            { id: "p4-s3-korelasi", title: "Korelasi, bukan pesan instan.", description: "Entanglement memberi korelasi, bukan saluran komunikasi lebih cepat dari cahaya.", visual: "measurement", duration: 18 },
+            { id: "p4-s4-interferensi", title: "Interferensi.", description: "Amplitudo dapat saling memperkuat atau meniadakan.", visual: "phase", duration: 18 }
+        ]
+    },
+    {
+        name: "Algoritma dan kegunaan",
+        scenes: [
+            { id: "p5-s1-algoritma", title: "Bukan paralelisme gratis.", description: "Algoritma harus mengatur amplitudo sebelum hasil diukur.", visual: "probability", duration: 18 },
+            { id: "p5-s2-grover", title: "Grover.", description: "Pencarian tak terstruktur mendapat percepatan kuadratik.", visual: "bit", duration: 18 },
+            { id: "p5-s3-shor", title: "Shor.", description: "Faktorisasi teoretis yang efisien membutuhkan perangkat toleran-kesalahan.", visual: "circuit", duration: 18 },
+            { id: "p5-s4-simulasi", title: "Simulasi kuantum.", description: "Sistem kuantum menjadi kelas penggunaan yang alami untuk diteliti.", visual: "atom", duration: 18 }
+        ]
+    },
+    {
+        name: "Noise dan batasnya",
+        scenes: [
+            { id: "p6-s1-noise", title: "Noise.", description: "Kesalahan kontrol dan pembacaan membuat hasil menyimpang dari circuit ideal.", visual: "phase", duration: 18 },
+            { id: "p6-s2-decoherence", title: "Decoherence.", description: "Interaksi dengan lingkungan merusak koherensi yang dibutuhkan.", visual: "wave", duration: 18 },
+            { id: "p6-s3-qec", title: "Quantum error correction.", description: "Satu qubit logis dilindungi oleh banyak qubit fisik.", visual: "bloch", duration: 18 },
+            { id: "p6-s4-spesialisasi", title: "Klasik dan kuantum.", description: "QPU lebih realistis sebagai akselerator khusus di dalam sistem klasik.", visual: "specialize", duration: 18 }
+        ]
+    }
+];
+
+
+/* ==================================
+   STATE
+================================== */
+
+const stage = document.getElementById("stage");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const partSelect = document.getElementById("part");
+const sceneSelect = document.getElementById("scene");
+const backgroundSelect = document.getElementById("background");
+const ratioSelect = document.getElementById("ratio");
+const loopButton = document.getElementById("loop");
+const cleanButton = document.getElementById("clean");
+const fullButton = document.getElementById("full");
+const prevButton = document.getElementById("prev");
+const playButton = document.getElementById("play");
+const restartButton = document.getElementById("restart");
+const nextButton = document.getElementById("next");
+const timelineInput = document.getElementById("timeline");
+const speedSelect = document.getElementById("speed");
+const backsoundButton = document.getElementById("backsound");
+const volumeInput = document.getElementById("volume");
+const timeDisplay = document.getElementById("time");
+const chapterDisplay = document.getElementById("chapter");
+const sceneNumberDisplay = document.getElementById("sceneNumber");
+const titleDisplay = document.getElementById("title");
+const descriptionDisplay = document.getElementById("description");
+
+let partIndex = 0;
+let sceneIndex = 0;
+
+let elapsed = 0;
+
+let playing = false;
+
+let previousTime = 0;
+
+let playbackSpeed = 1;
+let looping = false;
+
+let animationFrame;
+let audioContext;
+let audioMaster;
+let backsoundEnabled = false;
+let audioNodes = [];
+
+async function createBacksound() {
+    if (audioContext) return;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) {
+        backsoundButton.disabled = true;
+        return;
+    }
+    audioContext = new AudioContext();
+    audioMaster = audioContext.createGain();
+    audioMaster.gain.value = Number(volumeInput.value) / 100 * 0.12;
+    audioMaster.connect(audioContext.destination);
+    const filter = audioContext.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 680;
+    filter.Q.value = 0.7;
+    filter.connect(audioMaster);
+    [55, 82.41, 110].forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        oscillator.type = index === 1 ? "triangle" : "sine";
+        oscillator.frequency.value = frequency;
+        gain.gain.value = [0.32, 0.12, 0.06][index];
+        oscillator.connect(gain).connect(filter);
+        oscillator.start();
+        audioNodes.push(oscillator, gain);
+    });
+    const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 3, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const noise = audioContext.createBufferSource();
+    const noiseFilter = audioContext.createBiquadFilter();
+    const noiseGain = audioContext.createGain();
+    noise.buffer = buffer;
+    noise.loop = true;
+    noiseFilter.type = "bandpass";
+    noiseFilter.frequency.value = 240;
+    noiseFilter.Q.value = 0.45;
+    noiseGain.gain.value = 0.035;
+    noise.connect(noiseFilter).connect(noiseGain).connect(audioMaster);
+    noise.start();
+    const lfo = audioContext.createOscillator();
+    const lfoGain = audioContext.createGain();
+    lfo.frequency.value = 0.045;
+    lfoGain.gain.value = 90;
+    lfo.connect(lfoGain).connect(filter.frequency);
+    lfo.start();
+    audioNodes.push(noise, noiseFilter, noiseGain, filter, lfo, lfoGain);
+    await audioContext.suspend();
+}
+
+async function syncBacksound() {
+    if (!backsoundEnabled || !playing) {
+        if (audioContext?.state === "running") await audioContext.suspend();
+        return;
+    }
+    await createBacksound();
+    if (audioContext?.state === "suspended") await audioContext.resume();
+}
+
+function updateBacksoundButton() {
+    backsoundButton.textContent = `Backsound: ${backsoundEnabled ? "On" : "Off"}`;
+    backsoundButton.setAttribute("aria-pressed", String(backsoundEnabled));
+}
+
+
+/* ==================================
+   COLORS
+================================== */
+
+const COLOR = {
+
+    text: "#f5f5f2",
+
+    muted: "#b9bdc8",
+
+    accent: "#ff4db8",
+
+    accentSoft:
+        "rgba(255,77,184,.18)",
+
+    line:
+        "rgba(255,255,255,.12)",
+
+    surface:
+        "#151820"
+
+};
+
+
+/* ==================================
+   HELPERS
+================================== */
+
+function lerp(a, b, t) {
+
+    return a + (b - a) * t;
+
+}
+
+
+function easeOutCubic(t) {
+
+    return 1 -
+        Math.pow(1 - t, 3);
+
+}
+
+
+function clamp(value, min, max) {
+
+    return Math.max(
+        min,
+        Math.min(max, value)
+    );
+
+}
+
+
+function line(
+    x1,
+    y1,
+    x2,
+    y2,
+    color = COLOR.line,
+    width = 2
+) {
+
+    ctx.beginPath();
+
+    ctx.moveTo(x1, y1);
+
+    ctx.lineTo(x2, y2);
+
+    ctx.strokeStyle = color;
+
+    ctx.lineWidth = width;
+
+    ctx.lineCap = "round";
+
+    ctx.stroke();
+
+}
+
+
+function circle(
+    x,
+    y,
+    radius,
+    color,
+    fill = false
+) {
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        radius,
+        0,
+        Math.PI * 2
+    );
+
+    if (fill) {
+
+        ctx.fillStyle = color;
+
+        ctx.fill();
+
+    } else {
+
+        ctx.strokeStyle = color;
+
+        ctx.lineWidth = 2;
+
+        ctx.stroke();
+
+    }
+
+}
+
+
+function canvasText(
+    text,
+    x,
+    y,
+    size = 18,
+    color = COLOR.text,
+    weight = 600,
+    align = "center"
+) {
+
+    ctx.fillStyle = color;
+
+    ctx.font =
+        `${weight} ${size}px Montserrat`;
+
+    ctx.textAlign = align;
+
+    ctx.textBaseline =
+        "middle";
+
+    ctx.fillText(
+        text,
+        x,
+        y
+    );
+
+}
+
+
+/* ==================================
+   INIT
+================================== */
+
+function populateParts() {
+
+    partSelect.innerHTML =
+        parts
+        .map(
+            (part, index) =>
+                `<option value="${index}">
+                    ${String(index + 1).padStart(2,"0")}
+                    — ${part.name}
+                </option>`
+        )
+        .join("");
+
+    loadPart();
+
+}
+
+
+function loadPart(
+    selectedScene = 0
+) {
+
+    partIndex =
+        Number(partSelect.value);
+
+    sceneSelect.innerHTML =
+        parts[partIndex]
+        .scenes
+        .map(
+            (scene, index) =>
+                `<option value="${index}">
+                    ${index + 1}. ${scene.title}
+                </option>`
+        )
+        .join("");
+
+    sceneIndex =
+        clamp(
+            selectedScene,
+            0,
+            parts[partIndex]
+                .scenes.length - 1
+        );
+
+    sceneSelect.value =
+        sceneIndex;
+
+    loadScene();
+
+}
+
+
+function loadScene() {
+
+    sceneIndex =
+        Number(sceneSelect.value);
+
+    elapsed = 0;
+
+    const part =
+        parts[partIndex];
+
+    const scene =
+        part.scenes[sceneIndex];
+
+    chapterDisplay.textContent =
+        `Part ${String(partIndex + 1)
+        .padStart(2,"0")} · ${part.name}`;
+
+    sceneNumberDisplay.textContent =
+        `${String(sceneIndex + 1)
+        .padStart(2,"0")} / ${String(
+            part.scenes.length
+        ).padStart(2,"0")}`;
+
+    titleDisplay.textContent =
+        scene.title;
+
+    descriptionDisplay.textContent =
+        scene.description;
+
+    draw();
+
+    updatePlayer();
+
+}
+
+
+/* ==================================
+   CANVAS RESIZE
+================================== */
+
+function resize() {
+
+    const rect =
+        stage.getBoundingClientRect();
+
+    const pixelRatio =
+        Math.min(
+            window.devicePixelRatio,
+            2
+        );
+
+    canvas.width =
+        rect.width * pixelRatio;
+
+    canvas.height =
+        rect.height * pixelRatio;
+
+    ctx.setTransform(
+        pixelRatio,
+        0,
+        0,
+        pixelRatio,
+        0,
+        0
+    );
+
+    draw();
+
+}
+
+
+/* ==================================
+   VISUAL ENGINE
+================================== */
+
+function draw() {
+
+    const width =
+        stage.clientWidth;
+
+    const height =
+        stage.clientHeight;
+
+    const scene =
+        parts[partIndex]
+        .scenes[sceneIndex];
+
+    const progress =
+        clamp(
+            elapsed /
+            scene.duration,
+            0,
+            1
+        );
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    if (
+        backgroundSelect.value === "dark"
+    ) {
+
+        ctx.fillStyle =
+            "#090a0d";
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+    }
+
+    if (
+        backgroundSelect.value === "green"
+    ) {
+
+        ctx.fillStyle =
+            "#00b140";
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+    }
+
+    ctx.save();
+
+    const greenScreen = backgroundSelect.value === "green";
+
+    ctx.globalAlpha = 1;
+
+    if (greenScreen) {
+        COLOR.text = "#ffffff";
+        COLOR.muted = "#d9d9e0";
+        COLOR.accent = "#ff2aa8";
+        COLOR.accentSoft = "#ff2aa8";
+        COLOR.line = "#ffffff";
+        COLOR.surface = "#25152b";
+    } else {
+        COLOR.text = "#f5f5f2";
+        COLOR.muted = "#b9bdc8";
+        COLOR.accent = "#ff4db8";
+        COLOR.accentSoft = "rgba(255,77,184,.18)";
+        COLOR.line = "rgba(255,255,255,.12)";
+        COLOR.surface = "#151820";
+    }
+
+
+    switch (
+        scene.visual
+    ) {
+
+        case "research":
+        case "claims":
+        case "bitFoundation":
+        case "switchBit":
+        case "voltage":
+        case "bitScale":
+        case "notGate":
+        case "andTable":
+        case "gateToCpu":
+        case "classicQuantum":
+        case "misconception":
+        case "conceptMatter":
+        case "dataGrowth":
+        case "cpuQpu":
+        case "requirements":
+        case "fasterWhat":
+        case "superpositionQuestion":
+        case "measureTeaser":
+        case "bitToQubit":
+
+            drawPartOne(
+                scene.visual,
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+        case "bit":
+
+            drawBits(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "qubit":
+
+        case "psi":
+
+            drawQubit(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "atom":
+
+            drawAtom(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "probability":
+
+            drawProbability(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "bloch":
+
+            drawBloch(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "measurement":
+
+            drawMeasurement(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "gates":
+
+            drawGates(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "hadamard":
+
+            drawHadamard(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "phase":
+        case "wave":
+
+            drawPhase(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        case "circuit":
+
+            drawCircuit(
+                width,
+                height,
+                progress
+            );
+
+            break;
+
+
+        default:
+
+            drawSpecialize(
+                width,
+                height,
+                progress
+            );
+
+    }
+
+
+    ctx.restore();
+
+}
+
+
+function drawPartOne(type, w, h, progress) {
+    const s = Math.min(w, h);
+    const cx = w * .65;
+    const cy = h * .39;
+    const p = easeOutCubic(progress);
+    const box = (x, y, width, height, label, accent = false) => {
+        ctx.fillStyle = accent ? COLOR.accentSoft : COLOR.surface;
+        ctx.beginPath();
+        ctx.roundRect(x - width / 2, y - height / 2, width, height, 10);
+        ctx.fill();
+        ctx.strokeStyle = accent ? COLOR.accent : COLOR.line;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        canvasText(label, x, y, Math.max(11, s * .027), accent ? COLOR.text : COLOR.muted, 600);
+    };
+    const arrow = (x1, y1, x2, y2) => {
+        line(x1, y1, x2, y2, COLOR.accent, 3);
+        const a = Math.atan2(y2 - y1, x2 - x1);
+        line(x2, y2, x2 - 10 * Math.cos(a - .5), y2 - 10 * Math.sin(a - .5), COLOR.accent, 3);
+        line(x2, y2, x2 - 10 * Math.cos(a + .5), y2 - 10 * Math.sin(a + .5), COLOR.accent, 3);
+    };
+    const cross = (x, y, r) => {
+        line(x - r, y - r, x + r, y + r, COLOR.danger || "#ff786d", 4);
+        line(x + r, y - r, x - r, y + r, COLOR.danger || "#ff786d", 4);
+    };
+    ctx.globalAlpha = clamp(progress * 4, 0, 1);
+
+    if (type === "research") {
+        for (let i = 0; i < 5; i++) {
+            const x = w * (.47 + i * .075);
+            const y = h * (.25 + (i % 2) * .08);
+            box(x, y, w * .13, h * .13, `TAB ${i + 1}`, i === 4);
+            line(x - w * .045, y + h * .02, x + w * .035, y + h * .02, COLOR.line, 2);
+        }
+        box(cx, h * .49, w * .3, h * .12, "CATATAN · 14 HARI", true);
+        canvasText("SUMBER ABSTRAK", cx, h * .59, s * .022, COLOR.muted, 600);
+    } else if (type === "claims") {
+        ["SEMUANYA LEBIH CEPAT", "0 DAN 1 SEKALIGUS", "GANTI SEMUA KOMPUTER"].forEach((text, i) => {
+            box(cx, h * (.22 + i * .13), w * .31, h * .085, text);
+            canvasText("?", w * .84, h * (.22 + i * .13), s * .065, COLOR.accent, 800);
+        });
+    } else if (type === "bitFoundation") {
+        canvasText("BIT", cx, cy, s * .15, COLOR.text, 800);
+        canvasText("BINARY DIGIT", cx, cy + s * .11, s * .025, COLOR.accent, 700);
+        circle(cx - s * .16, cy, s * .045, COLOR.line, true);
+        circle(cx + s * .16, cy, s * .045, COLOR.accent, true);
+        canvasText("0", cx - s * .16, cy, s * .04, COLOR.text, 700);
+        canvasText("1", cx + s * .16, cy, s * .04, COLOR.text, 700);
+    } else if (type === "switchBit") {
+        const on = progress > .5;
+        box(cx, cy, w * .28, h * .16, on ? "ON     1" : "OFF     0", on);
+        const knobX = cx + (on ? s * .075 : -s * .075);
+        line(cx - s * .09, cy + s * .08, cx + s * .09, cy + s * .08, COLOR.line, 12);
+        circle(knobX, cy + s * .08, s * .025, on ? COLOR.accent : COLOR.muted, true);
+    } else if (type === "voltage") {
+        const x = w * .47, width = w * .36;
+        ctx.fillStyle = COLOR.surface;
+        ctx.fillRect(x, cy - s * .035, width, s * .07);
+        ctx.fillStyle = COLOR.accent;
+        ctx.fillRect(x + width * .62, cy - s * .035, width * .38 * p, s * .07);
+        canvasText("RENDAH → 0", x, cy + s * .09, s * .025, COLOR.muted, 600, "left");
+        canvasText("TINGGI → 1", x + width, cy + s * .09, s * .025, COLOR.accent, 600, "right");
+        canvasText("rentang tegangan", cx, cy - s * .1, s * .026, COLOR.text, 600);
+    } else if (type === "bitScale") {
+        const labels = ["123", "Aa", "PIXEL", "MUSIK", "GAME", "WEB", "VIDEO"];
+        labels.forEach((label, i) => {
+            const a = i / labels.length * Math.PI * 2 + progress;
+            const x = cx + Math.cos(a) * s * .23;
+            const y = cy + Math.sin(a) * s * .15;
+            box(x, y, s * .13, s * .065, label, i % 3 === 0);
+        });
+        circle(cx, cy, s * .065, COLOR.accent, true);
+        canvasText("BITS", cx, cy, s * .026, COLOR.text, 700);
+    } else if (type === "notGate") {
+        box(cx, cy, s * .16, s * .13, "NOT", true);
+        canvasText(progress > .5 ? "1" : "0", cx - s * .2, cy, s * .06, COLOR.text, 700);
+        canvasText(progress > .5 ? "0" : "1", cx + s * .2, cy, s * .06, COLOR.accent, 700);
+        arrow(cx - s * .14, cy, cx - s * .085, cy);
+        arrow(cx + s * .085, cy, cx + s * .14, cy);
+    } else if (type === "andTable") {
+        const rows = [[0,0,0],[0,1,0],[1,0,0],[1,1,1]];
+        canvasText("A     B     A AND B", cx, h * .19, s * .027, COLOR.muted, 700);
+        rows.forEach((row, i) => {
+            const y = h * (.27 + i * .075);
+            box(cx, y, w * .26, h * .055, row.join("          "), i === 3 && progress > .45);
+        });
+    } else if (type === "gateToCpu") {
+        ["NOT", "AND", "OR"].forEach((g, i) => box(w * .46, h * (.25 + i * .11), s * .12, s * .07, g));
+        box(cx, cy, s * .18, s * .13, "CIRCUIT", true);
+        box(w * .83, cy, s * .15, s * .15, "CPU", true);
+        arrow(w * .51, cy, cx - s * .1, cy);
+        arrow(cx + s * .1, cy, w * .75, cy);
+    } else if (type === "classicQuantum") {
+        const q = clamp((progress - .35) * 2, 0, 1);
+        line(w * .45, cy, w * .84, cy, COLOR.line, 2);
+        box(w * .54, cy, s * .12, s * .1, q < .5 ? "AND" : "H", true);
+        box(w * .7, cy, s * .12, s * .1, q < .5 ? "NOT" : "X", true);
+        canvasText(q < .5 ? "CLASSICAL GATES" : "QUANTUM CIRCUIT · QUBIT", cx, cy + s * .13, s * .026, q < .5 ? COLOR.muted : COLOR.accent, 700);
+    } else if (type === "misconception") {
+        box(cx, h * .22, w * .3, h * .09, "UPGRADE KECEPATAN", true);
+        ["EMAIL", "BROWSER", "NONTON VIDEO", "TUGAS HARIAN"].forEach((label, i) => {
+            const x = w * (.49 + (i % 2) * .25), y = h * (.36 + Math.floor(i / 2) * .13);
+            box(x, y, s * .21, s * .075, label);
+            cross(x, y, s * .07 * p);
+        });
+    } else if (type === "conceptMatter") {
+        canvasText("VISUALISASI KONSEPTUAL", cx, h * .18, s * .025, COLOR.accent, 700);
+        circle(cx - s * .1, cy, s * .035, COLOR.accent, true);
+        circle(cx + s * .08, cy - s * .04, s * .03, COLOR.text, true);
+        circle(cx + s * .14, cy + s * .05, s * .03, COLOR.text, true);
+        line(cx - s * .06, cy, cx + s * .05, cy - s * .03, COLOR.line, 3);
+        line(cx + s * .1, cy, cx + s * .13, cy + s * .025, COLOR.line, 3);
+        canvasText("ATOM", cx - s * .1, cy + s * .1, s * .024, COLOR.muted, 600);
+        canvasText("MOLEKUL", cx + s * .11, cy + s * .13, s * .024, COLOR.muted, 600);
+    } else if (type === "dataGrowth") {
+        for (let i = 0; i < 8; i++) {
+            const bh = s * (.025 + i * i * .005) * p;
+            ctx.fillStyle = i > 5 ? COLOR.accent : COLOR.muted;
+            ctx.fillRect(w * (.44 + i * .052), h * .56 - bh, w * .025, bh);
+        }
+        canvasText("SISTEM → DATA REPRESENTASI", cx, h * .19, s * .026, COLOR.text, 700);
+        canvasText("tumbuh cepat", cx, h * .62, s * .024, COLOR.accent, 600);
+    } else if (type === "cpuQpu") {
+        box(w * .55, cy, s * .2, s * .2, "CPU\nKLASIK");
+        box(w * .76, cy, s * .2, s * .2, "QPU\nKHUSUS", true);
+        arrow(w * .61, cy, w * .69, cy);
+        canvasText("BERDAMPINGAN", cx, cy + s * .16, s * .026, COLOR.muted, 700);
+    } else if (type === "requirements") {
+        ["MASALAH COCOK", "ALGORITMA TEPAT", "HARDWARE MAMPU"].forEach((label, i) => {
+            const x = w * (.47 + i * .17);
+            circle(x, cy, s * .075, i < progress * 4 ? COLOR.accent : COLOR.line, i < progress * 4);
+            canvasText(String(i + 1), x, cy, s * .035, COLOR.text, 700);
+            canvasText(label, x, cy + s * .115, s * .019, COLOR.muted, 700);
+        });
+    } else if (type === "fasterWhat") {
+        canvasText("LEBIH CEPAT", cx, cy - s * .06, s * .07, COLOR.text, 800);
+        canvasText("UNTUK MASALAH APA?", cx, cy + s * .045, s * .055, COLOR.accent, 800);
+        canvasText("?", w * .84, cy, s * .18, COLOR.accentSoft, 800);
+    } else if (type === "superpositionQuestion") {
+        box(cx, cy, w * .32, h * .15, "QUBIT = 0 DAN 1?", true);
+        canvasText("?", w * .84, cy, s * .15, COLOR.accent, 800);
+        canvasText("klaim ini perlu konteks", cx, cy + s * .13, s * .024, COLOR.muted, 600);
+    } else if (type === "measureTeaser") {
+        circle(w * .56, cy, s * .075, COLOR.accentSoft, true);
+        canvasText("ψ", w * .56, cy, s * .055, COLOR.text, 600);
+        arrow(w * .64, cy, w * .71, cy);
+        box(w * .78, cy, s * .13, s * .12, progress > .5 ? "1" : "0", true);
+        circle(w * .78, cy, s * .16, COLOR.line);
+        canvasText("BLOCH SPHERE · BERIKUTNYA", cx, cy + s * .2, s * .023, COLOR.muted, 700);
+    } else if (type === "bitToQubit") {
+        box(w * .53, cy, s * .21, s * .15, "BIT  0 | 1");
+        arrow(w * .64, cy, w * .71, cy);
+        box(w * .79, cy, s * .2, s * .15, "QUBIT", true);
+        canvasText("→", cx, cy + s * .14, s * .05, COLOR.accent, 700);
+    }
+    ctx.globalAlpha = 1;
+}
+
+/* ==================================
+   BIT
+================================== */
+
+function drawBits(
+    w,
+    h,
+    progress
+) {
+
+    const centerY =
+        h * 0.43;
+
+    const startX =
+        w * 0.23;
+
+    const spacing =
+        w * 0.075;
+
+    const radius =
+        Math.min(w,h) * 0.027;
+
+
+    for (
+        let i = 0;
+        i < 8;
+        i++
+    ) {
+
+        const x =
+            startX +
+            spacing * i;
+
+        const local =
+            clamp(
+                progress * 10 - i,
+                0,
+                1
+            );
+
+        const scale =
+            0.85 +
+            easeOutCubic(local)
+            * 0.15;
+
+
+        circle(
+            x,
+            centerY,
+            radius * scale,
+            local > 0
+                ? COLOR.accent
+                : COLOR.line,
+            true
+        );
+
+
+        canvasText(
+            i % 3 === 0
+                ? "1"
+                : "0",
+            x,
+            centerY,
+            17,
+            local > 0
+                ? "#ffffff"
+                : "#666b75",
+            700
+        );
+
+    }
+
+}
+
+
+/* ==================================
+   QUBIT
+================================== */
+
+function drawQubit(
+    w,
+    h,
+    progress
+) {
+
+    const centerX =
+        w * 0.61;
+
+    const centerY =
+        h * 0.42;
+
+    const size =
+        Math.min(w,h);
+
+
+    const alpha =
+        easeOutCubic(
+            clamp(
+                progress * 2,
+                0,
+                1
+            )
+        );
+
+
+    ctx.globalAlpha =
+        alpha;
+
+
+    canvasText(
+        "|ψ⟩",
+        centerX,
+        centerY - size*.065,
+        size*.085,
+        COLOR.text,
+        600
+    );
+
+
+    canvasText(
+        "=",
+        centerX-size*.145,
+        centerY+size*.07,
+        size*.037,
+        COLOR.muted,
+        500
+    );
+
+
+    canvasText(
+        "α|0⟩ + β|1⟩",
+        centerX+size*.05,
+        centerY+size*.07,
+        size*.045,
+        COLOR.accent,
+        600
+    );
+
+}
+
+
+/* ==================================
+   ATOM
+================================== */
+
+function drawAtom(
+    w,
+    h,
+    progress
+) {
+
+    const cx =
+        w * 0.62;
+
+    const cy =
+        h * 0.43;
+
+    const size =
+        Math.min(w,h);
+
+
+    circle(
+        cx,
+        cy,
+        size*.035,
+        COLOR.accent,
+        true
+    );
+
+
+    for (
+        let ring = 0;
+        ring < 3;
+        ring++
+    ) {
+
+        ctx.save();
+
+        ctx.translate(
+            cx,
+            cy
+        );
+
+        ctx.rotate(
+            ring *
+            Math.PI /
+            3
+        );
+
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            0,
+            0,
+            size*.19,
+            size*.072,
+            0,
+            0,
+            Math.PI*2
+        );
+
+        ctx.strokeStyle =
+            COLOR.line;
+
+        ctx.lineWidth = 2;
+
+        ctx.stroke();
+
+
+        const angle =
+            progress *
+            Math.PI *
+            4 +
+            ring*2;
+
+        const x =
+            Math.cos(angle) *
+            size*.19;
+
+        const y =
+            Math.sin(angle) *
+            size*.072;
+
+
+        circle(
+            x,
+            y,
+            size*.012,
+            COLOR.text,
+            true
+        );
+
+
+        ctx.restore();
+
+    }
+
+}
+
+
+/* ==================================
+   PROBABILITY
+================================== */
+
+function drawProbability(
+    w,
+    h,
+    progress
+) {
+
+    const cx =
+        w * 0.63;
+
+    const base =
+        h * 0.56;
+
+    const maxHeight =
+        h * 0.28;
+
+
+    const wave =
+        (
+            Math.sin(
+                progress *
+                Math.PI*2
+            ) + 1
+        ) / 2;
+
+
+    const zero =
+        maxHeight * wave;
+
+    const one =
+        maxHeight * (1-wave);
+
+
+    drawBar(
+        cx-w*.07,
+        base,
+        zero,
+        "|α|²",
+        COLOR.text
+    );
+
+
+    drawBar(
+        cx+w*.07,
+        base,
+        one,
+        "|β|²",
+        COLOR.accent
+    );
+
+
+    canvasText(
+        "|α|² + |β|² = 1",
+        cx,
+        base +
+        h*.075,
+        Math.max(13,w*.012),
+        COLOR.muted,
+        500
+    );
+
+}
+
+
+function drawBar(
+    x,
+    base,
+    height,
+    label,
+    color
+) {
+
+    const width =
+        Math.max(
+            34,
+            stage.clientWidth *
+            .035
+        );
+
+
+    ctx.fillStyle =
+        color;
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        x-width/2,
+        base-height,
+        width,
+        height,
+        5
+    );
+
+    ctx.fill();
+
+
+    canvasText(
+        label,
+        x,
+        base+25,
+        13,
+        COLOR.text,
+        500
+    );
+
+}
+
+
+/* ==================================
+   BLOCH SPHERE
+================================== */
+
+function drawBloch(
+    w,
+    h,
+    progress
+) {
+
+    const cx =
+        w*.64;
+
+    const cy =
+        h*.43;
+
+    const radius =
+        Math.min(w,h)*.19;
+
+
+    ctx.strokeStyle =
+        backgroundSelect.value === "green" ? "#ffffff" : "rgba(255,255,255,.25)";
+
+    ctx.lineWidth = 2;
+
+
+    circle(
+        cx,
+        cy,
+        radius,
+        backgroundSelect.value === "green" ? "#ffffff" : "rgba(255,255,255,.20)"
+    );
+
+
+    ctx.save();
+
+    ctx.translate(cx,cy);
+
+    ctx.scale(1,.3);
+
+    circle(
+        0,
+        0,
+        radius,
+        backgroundSelect.value === "green" ? "#ffffff" : "rgba(255,255,255,.12)"
+    );
+
+    ctx.restore();
+
+
+    line(
+        cx,
+        cy-radius*1.25,
+        cx,
+        cy+radius*1.25,
+        COLOR.line,
+        1.5
+    );
+
+
+    const angle =
+        progress *
+        Math.PI *
+        2 -
+        Math.PI/2;
+
+
+    const x =
+        cx +
+        Math.cos(angle) *
+        radius*.78;
+
+    const y =
+        cy +
+        Math.sin(angle) *
+        radius*.78;
+
+
+    line(
+        cx,
+        cy,
+        x,
+        y,
+        COLOR.accent,
+        4
+    );
+
+
+    circle(
+        x,
+        y,
+        6,
+        COLOR.accent,
+        true
+    );
+
+
+    canvasText(
+        "|0⟩",
+        cx,
+        cy-radius*1.42,
+        14,
+        COLOR.text,
+        600
+    );
+
+
+    canvasText(
+        "|1⟩",
+        cx,
+        cy+radius*1.42,
+        14,
+        COLOR.muted,
+        600
+    );
+
+}
+
+
+/* ==================================
+   MEASUREMENT
+================================== */
+
+function drawMeasurement(
+    w,
+    h,
+    progress
+) {
+
+    const y =
+        h*.43;
+
+
+    const start =
+        w*.49;
+
+    const meter =
+        w*.61;
+
+
+    circle(
+        start,
+        y,
+        40,
+        COLOR.accentSoft,
+        true
+    );
+
+
+    circle(
+        start,
+        y,
+        40,
+        COLOR.accent
+    );
+
+
+    canvasText(
+        "ψ",
+        start,
+        y,
+        24,
+        COLOR.text,
+        600
+    );
+
+
+    line(
+        start+40,
+        y,
+        meter-40,
+        y,
+        COLOR.accent,
+        3
+    );
+
+
+    const angle =
+        -Math.PI*.8 +
+        progress*
+        Math.PI*.6;
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        meter,
+        y,
+        45,
+        Math.PI,
+        0
+    );
+
+    ctx.strokeStyle =
+        COLOR.line;
+
+    ctx.lineWidth = 4;
+
+    ctx.stroke();
+
+
+    line(
+        meter,
+        y,
+        meter+
+        Math.cos(angle)*38,
+        y+
+        Math.sin(angle)*38,
+        COLOR.text,
+        3
+    );
+
+
+    canvasText(
+        progress>.5
+            ? "1"
+            : "0",
+        meter,
+        y+70,
+        24,
+        COLOR.accent,
+        700
+    );
+
+}
+
+
+/* ==================================
+   GATES
+================================== */
+
+function drawGates(
+    w,
+    h,
+    progress
+) {
+
+    const y =
+        h*.43;
+
+
+    line(
+        w*.45,
+        y,
+        w*.79,
+        y,
+        COLOR.line,
+        2
+    );
+
+
+    const gates =
+        ["X","Y","Z"];
+
+
+    gates.forEach(
+        (gate,index) => {
+
+            const x =
+                w*.51 +
+                index*w*.105;
+
+
+            const visible =
+                clamp(
+                    progress*4 -
+                    index,
+                    0,
+                    1
+                );
+
+
+            ctx.globalAlpha =
+                visible;
+
+
+            gateBox(
+                x,
+                y,
+                gate
+            );
+
+        }
+    );
+
+
+    ctx.globalAlpha = 1;
+
+}
+
+
+/* ==================================
+   HADAMARD
+================================== */
+
+function drawHadamard(
+    w,
+    h,
+    progress
+) {
+
+    const y =
+        h*.43;
+
+
+    const positions =
+        [
+            w*.5,
+            w*.63,
+            w*.76
+        ];
+
+
+    line(
+        w*.43,
+        y,
+        w*.81,
+        y,
+        COLOR.line
+    );
+
+
+    gateBox(
+        positions[0],
+        y,
+        "H"
+    );
+
+
+    gateBox(
+        positions[1],
+        y,
+        "H"
+    );
+
+
+    if (
+        progress > .4
+    ) {
+
+        canvasText(
+            "= |0⟩",
+            positions[2],
+            y,
+            20,
+            COLOR.text,
+            600
+        );
+
+    }
+
+}
+
+
+/* ==================================
+   PHASE
+================================== */
+
+function drawPhase(
+    w,
+    h,
+    progress
+) {
+
+    const start =
+        w*.47;
+
+    const width =
+        w*.33;
+
+    const center =
+        h*.43;
+
+
+    drawWave(
+        start,
+        center-40,
+        width,
+        progress,
+        COLOR.accent,
+        0
+    );
+
+
+    drawWave(
+        start,
+        center+40,
+        width,
+        progress,
+        COLOR.text,
+        Math.PI
+    );
+
+
+    canvasText(
+        "fase",
+        start+width/2,
+        center+115,
+        14,
+        COLOR.muted,
+        500
+    );
+
+}
+
+
+function drawWave(
+    startX,
+    centerY,
+    width,
+    progress,
+    color,
+    phase
+) {
+
+    ctx.beginPath();
+
+    for (
+        let x=0;
+        x<=width;
+        x+=3
+    ) {
+
+        const y =
+            centerY +
+            Math.sin(
+                x/28 +
+                progress*5 +
+                phase
+            ) * 25;
+
+
+        if (
+            x===0
+        ) {
+
+            ctx.moveTo(
+                startX+x,
+                y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                startX+x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.strokeStyle =
+        color;
+
+    ctx.lineWidth = 3;
+
+    ctx.stroke();
+
+}
+
+
+/* ==================================
+   CIRCUIT
+================================== */
+
+function drawCircuit(
+    w,
+    h,
+    progress
+) {
+
+    const y =
+        h*.43;
+
+
+    line(
+        w*.42,
+        y,
+        w*.82,
+        y,
+        COLOR.line,
+        2
+    );
+
+
+    const gates =
+        [
+            ["|0⟩",w*.47],
+            ["H",w*.57],
+            ["Z",w*.67],
+            ["M",w*.77]
+        ];
+
+
+    gates.forEach(
+        ([label,x],index) => {
+
+            const visible =
+                clamp(
+                    progress*5-index,
+                    0,
+                    1
+                );
+
+
+            ctx.globalAlpha =
+                visible;
+
+
+            if (
+                label==="|0⟩"
+            ) {
+
+                canvasText(
+                    label,
+                    x,
+                    y,
+                    17,
+                    COLOR.text,
+                    600
+                );
+
+            } else {
+
+                gateBox(
+                    x,
+                    y,
+                    label
+                );
+
+            }
+
+        }
+    );
+
+
+    ctx.globalAlpha = 1;
+
+}
+
+
+/* ==================================
+   SPECIALIZE
+================================== */
+
+function drawSpecialize(
+    w,
+    h,
+    progress
+) {
+
+    const y =
+        h*.43;
+
+
+    const left =
+        w*.50;
+
+    const right =
+        w*.72;
+
+
+    const radius =
+        Math.min(w,h)*.072;
+
+
+    circle(
+        left,
+        y,
+        radius,
+        COLOR.line,
+        false
+    );
+
+
+    circle(
+        right,
+        y,
+        radius,
+        COLOR.accentSoft,
+        true
+    );
+
+
+    circle(
+        right,
+        y,
+        radius,
+        COLOR.accent,
+        false
+    );
+
+
+    canvasText(
+        "CPU",
+        left,
+        y,
+        16,
+        COLOR.text,
+        600
+    );
+
+
+    canvasText(
+        "QPU",
+        right,
+        y,
+        16,
+        COLOR.text,
+        600
+    );
+
+
+    const animatedEnd =
+        lerp(
+            left+radius,
+            right-radius,
+            easeOutCubic(progress)
+        );
+
+
+    line(
+        left+radius,
+        y,
+        animatedEnd,
+        y,
+        COLOR.accent,
+        3
+    );
+
+}
+
+
+/* ==================================
+   GATE BOX
+================================== */
+
+function gateBox(
+    x,
+    y,
+    label
+) {
+
+    const size = 50;
+
+
+    ctx.fillStyle =
+        COLOR.surface;
+
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        x-size/2,
+        y-size/2,
+        size,
+        size,
+        9
+    );
+
+    ctx.fill();
+
+
+    ctx.strokeStyle =
+        "rgba(255,77,184,.9)";
+
+    ctx.lineWidth = 2;
+
+    ctx.stroke();
+
+
+    canvasText(
+        label,
+        x,
+        y,
+        17,
+        COLOR.text,
+        600
+    );
+
+}
+
+
+/* ==================================
+   PLAYER
+================================== */
+
+function updatePlayer() {
+
+    const scene =
+        parts[partIndex]
+        .scenes[sceneIndex];
+
+
+    timelineInput.value =
+        Math.round(
+            elapsed /
+            scene.duration *
+            1000
+        );
+
+
+    timeDisplay.textContent =
+        `${formatTime(elapsed)}
+        / ${formatTime(scene.duration)}`;
+
+
+    playButton.textContent =
+        playing
+            ? "Pause"
+            : "Play";
+
+}
+
+
+function formatTime(
+    seconds
+) {
+
+    return `00:${String(
+        Math.floor(seconds)
+    ).padStart(2,"0")}`;
+
+}
+
+
+/* ==================================
+   ANIMATION
+================================== */
+
+function tick(
+    timestamp
+) {
+
+    if (
+        !playing
+    ) return;
+
+
+    if (
+        !previousTime
+    ) {
+
+        previousTime =
+            timestamp;
+
+    }
+
+
+    elapsed +=
+        (timestamp-previousTime)
+        /1000
+        *playbackSpeed;
+
+
+    previousTime =
+        timestamp;
+
+
+    const scene =
+        parts[partIndex]
+        .scenes[sceneIndex];
+
+
+    if (
+        elapsed >=
+        scene.duration
+    ) {
+
+        if (
+            sceneIndex <
+            parts[partIndex]
+            .scenes.length-1
+        ) {
+
+            sceneIndex++;
+
+            sceneSelect.value =
+                sceneIndex;
+
+            loadScene();
+
+        }
+
+        else if (
+            partIndex <
+            parts.length-1
+        ) {
+
+            partIndex++;
+
+            partSelect.value =
+                partIndex;
+
+            loadPart();
+
+        }
+
+        else if (looping) {
+
+            partIndex = 0;
+            partSelect.value = 0;
+            loadPart(0);
+
+        }
+
+        else {
+
+            elapsed =
+                scene.duration;
+
+            playing = false;
+            syncBacksound();
+        }
+
+    }
+
+
+
+    draw();
+
+    updatePlayer();
+
+
+    animationFrame =
+        requestAnimationFrame(
+            tick
+        );
+
+}
+
+
+/* ==================================
+   PLAYBACK CONTROLS
+================================== */
+
+function togglePlay() {
+
+    playing =
+        !playing;
+
+
+    previousTime = 0;
+
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+
+    if (
+        playing
+    ) {
+
+        animationFrame =
+            requestAnimationFrame(
+                tick
+            );
+
+    }
+
+
+    updatePlayer();
+    syncBacksound();
+
+}
+
+
+function nextScene(
+    direction
+) {
+
+    sceneIndex +=
+        direction;
+
+
+    if (
+        sceneIndex >=
+        parts[partIndex]
+        .scenes.length
+    ) {
+
+        if (
+            partIndex <
+            parts.length-1
+        ) {
+
+            partIndex++;
+
+            partSelect.value =
+                partIndex;
+
+            loadPart();
+
+            return;
+
+        }
+
+        sceneIndex =
+            parts[partIndex]
+            .scenes.length-1;
+
+    }
+
+
+    if (
+        sceneIndex < 0
+    ) {
+
+        if (
+            partIndex > 0
+        ) {
+
+            partIndex--;
+
+            partSelect.value =
+                partIndex;
+
+            loadPart(
+                parts[partIndex]
+                .scenes.length-1
+            );
+
+            return;
+
+        }
+
+        sceneIndex = 0;
+
+    }
+
+
+    sceneSelect.value =
+        sceneIndex;
+
+    loadScene();
+
+}
+
+
+/* ==================================
+   EVENTS
+================================== */
+
+partSelect.addEventListener(
+    "change",
+    () => loadPart()
+);
+
+
+sceneSelect.addEventListener(
+    "change",
+    loadScene
+);
+
+
+playButton.addEventListener(
+    "click",
+    togglePlay
+);
+
+
+restartButton.addEventListener(
+    "click",
+    () => {
+
+        elapsed = 0;
+
+        draw();
+
+        updatePlayer();
+
+    }
+);
+
+
+nextButton.addEventListener(
+    "click",
+    () => nextScene(1)
+);
+
+
+prevButton.addEventListener(
+    "click",
+    () => nextScene(-1)
+);
+
+
+speedSelect.addEventListener(
+    "change",
+    () => {
+
+        playbackSpeed =
+            Number(speedSelect.value);
+
+    }
+);
+
+backsoundButton.addEventListener("click", async () => {
+    backsoundEnabled = !backsoundEnabled;
+    updateBacksoundButton();
+    await syncBacksound();
+});
+
+volumeInput.addEventListener("input", () => {
+    if (!audioMaster || !audioContext) return;
+    audioMaster.gain.setTargetAtTime(Number(volumeInput.value) / 100 * 0.12, audioContext.currentTime, 0.08);
+});
+
+window.addEventListener("pagehide", () => {
+    audioNodes.forEach(node => {
+        if (typeof node.stop === "function") {
+            try { node.stop(); } catch {}
+        }
+        node.disconnect();
+    });
+    audioContext?.close();
+    audioNodes = [];
+    audioContext = null;
+});
+
+
+timelineInput.addEventListener(
+    "input",
+    () => {
+
+        const scene =
+            parts[partIndex]
+            .scenes[sceneIndex];
+
+
+        elapsed =
+            Number(
+                timelineInput.value
+            )
+            /1000
+            *scene.duration;
+
+
+        draw();
+
+        updatePlayer();
+
+    }
+);
+
+
+backgroundSelect.addEventListener(
+    "change",
+    () => {
+
+        stage.classList.toggle(
+            "green",
+            backgroundSelect.value === "green"
+        );
+        stage.classList.toggle(
+            "transparent",
+            backgroundSelect.value === "transparent"
+        );
+
+        draw();
+
+    }
+);
+
+
+ratioSelect.addEventListener(
+    "change",
+    () => {
+        stage.style.aspectRatio = ratioSelect.value;
+        resize();
+    }
+);
+
+
+loopButton.addEventListener(
+    "click",
+    () => {
+        looping = !looping;
+        loopButton.textContent = looping ? "Loop: On" : "Loop: Off";
+        loopButton.setAttribute("aria-pressed", String(looping));
+    }
+);
+
+
+cleanButton.addEventListener(
+    "click",
+    () => {
+
+        document.body
+            .classList
+            .toggle(
+                "clean"
+            );
+
+        resize();
+
+    }
+);
+
+
+fullButton.addEventListener(
+    "click",
+    () => {
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            document.exitFullscreen();
+
+        } else {
+
+            document
+                .documentElement
+                .requestFullscreen();
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.target.tagName ===
+            "SELECT"
+        ) return;
+
+
+        if (
+            event.code === "Space"
+        ) {
+
+            event.preventDefault();
+
+            togglePlay();
+
+        }
+
+
+        if (
+            event.key ===
+            "ArrowRight"
+        ) {
+
+            nextScene(1);
+
+        }
+
+
+        if (
+            event.key ===
+            "ArrowLeft"
+        ) {
+
+            nextScene(-1);
+
+        }
+
+
+        if (
+            event.key
+                .toLowerCase()
+            === "r"
+        ) {
+
+            elapsed = 0;
+
+            draw();
+
+            updatePlayer();
+
+        }
+
+
+        if (
+            event.key
+                .toLowerCase()
+            === "u"
+        ) {
+
+            cleanButton.click();
+
+        }
+
+
+        if (
+            event.key
+                .toLowerCase()
+            === "f"
+        ) {
+
+            fullButton.click();
+
+        }
+
+    }
+);
+
+
+/* ==================================
+   START
+================================== */
+
+function initialize() {
+    try {
+        populateParts();
+        resize();
+        new ResizeObserver(resize).observe(stage);
+    } catch (error) {
+        console.error("Quantum visual initialization failed:", error);
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialize, { once: true });
+} else {
+    initialize();
+}
+
+</script>
+
+</body>
+</html>

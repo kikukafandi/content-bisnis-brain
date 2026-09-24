@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JSON-LD di kikuk.me</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400..700&family=IBM+Plex+Mono:wght@500;700&display=swap');
+:root{--paper:#f2f0e9;--ink:#171816;--muted:#686a63;--line:#c9c7bd;--accent:#d43b2f;--code:#20221f;--code-text:#e9eadf}*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:var(--ink);color:var(--ink);font-family:"Google Sans Flex",Arial,sans-serif}.deck{height:100%;position:relative}.slide{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;gap:clamp(18px,3vh,34px);padding:clamp(28px,5vw,76px);background:var(--paper);opacity:0;visibility:hidden;transform:translateX(28px);transition:opacity .35s ease,transform .35s ease;overflow:hidden}.slide.active{opacity:1;visibility:visible;transform:none}.slide::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.16;background-image:radial-gradient(#171816 0.55px,transparent .55px);background-size:7px 7px}.masthead,.footer,.content{position:relative;z-index:1}.masthead,.footer{display:flex;align-items:center;justify-content:space-between;font:700 clamp(10px,1vw,14px)/1 "IBM Plex Mono",monospace;letter-spacing:.13em;text-transform:uppercase}.masthead{border-bottom:1px solid var(--line);padding-bottom:14px}.footer{border-top:1px solid var(--line);padding-top:14px;color:var(--muted)}.content{align-self:center}.kicker{display:inline-block;margin-bottom:20px;padding:7px 10px;background:var(--ink);color:var(--paper);font:700 clamp(10px,1vw,13px)/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase}.display{margin:0;max-width:1050px;font-size:clamp(46px,7.6vw,112px);line-height:.88;letter-spacing:-.065em}.display em{color:var(--accent);font-style:normal}.lead{max-width:760px;margin:28px 0 0;font-size:clamp(18px,2vw,30px);line-height:1.35;color:var(--muted)}.split{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(28px,6vw,88px);align-items:center}.split h2,.stack h2{margin:0;font-size:clamp(38px,5vw,76px);line-height:.95;letter-spacing:-.05em}.split p,.stack p{font-size:clamp(17px,1.7vw,25px);line-height:1.45;color:var(--muted)}.code{margin:0;padding:clamp(20px,2.6vw,36px);background:var(--code);color:var(--code-text);border-left:6px solid var(--accent);font:500 clamp(12px,1.35vw,20px)/1.55 ui-"IBM Plex Mono",monospace,SFMono-Regular,Consolas,"IBM Plex Mono",monospace;white-space:pre-wrap;overflow:hidden;box-shadow:18px 18px 0 #d7d4c9}.code .key{color:#ff8b7e}.code .value{color:#b9d786}.code .fn{color:#e8c56b}.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:40px}.step{min-height:150px;padding:20px 16px;border-top:5px solid var(--ink);background:#e4e1d7;display:flex;flex-direction:column;justify-content:space-between}.step b{font-size:clamp(15px,1.5vw,22px)}.step span{font:700 12px/1 "IBM Plex Mono",monospace;color:var(--accent)}.schema-grid{display:grid;grid-template-columns:1.4fr .8fr .8fr;grid-template-rows:1fr 1fr;gap:12px;margin-top:30px}.schema-cell{padding:clamp(18px,2.2vw,32px);background:#e4e1d7;border-top:4px solid var(--ink)}.schema-cell:first-child{grid-row:span 2;background:var(--ink);color:var(--paper);border-color:var(--accent)}.schema-cell b{display:block;font-size:clamp(22px,2.4vw,38px);letter-spacing:-.04em}.schema-cell span{display:block;margin-top:10px;color:var(--muted);line-height:1.4}.schema-cell:first-child span{color:#b9bbb2}.big-number{font:800 clamp(100px,20vw,300px)/.7 Georgia,serif;color:var(--accent);letter-spacing:-.09em}.checklist{display:grid;grid-template-columns:1fr 1fr;gap:0 42px;margin:30px 0 0;padding:0;list-style:none}.checklist li{padding:18px 0;border-top:1px solid var(--line);font-size:clamp(16px,1.7vw,25px)}.checklist li::before{content:"→";margin-right:14px;color:var(--accent);font-weight:900}.warning{background:var(--accent);color:#fff}.warning::after{opacity:.1}.warning .masthead,.warning .footer{border-color:rgba(255,255,255,.45);color:#fff}.warning .kicker{background:#fff;color:var(--accent)}.warning .lead,.warning p{color:#ffe9e5}.warning .code{box-shadow:18px 18px 0 rgba(255,255,255,.22)}.controls{position:fixed;right:18px;bottom:16px;z-index:20;display:flex;gap:6px}.controls button{width:40px;height:40px;border:1px solid #777;background:#20211f;color:#f2f0e9;font-size:18px;cursor:pointer}.controls button:active{transform:translateY(1px)}.progress{position:fixed;left:0;bottom:0;z-index:30;height:4px;background:var(--accent);transition:width .3s ease}.note{font:600 clamp(12px,1.2vw,17px)/1.5 ui-"IBM Plex Mono",monospace,"IBM Plex Mono",monospace;color:var(--muted)}@media(max-width:760px){.slide{padding:24px}.split{grid-template-columns:1fr}.pipeline{grid-template-columns:1fr 1fr}.step{min-height:90px}.schema-grid{grid-template-columns:1fr 1fr}.schema-cell:first-child{grid-row:auto;grid-column:span 2}.checklist{grid-template-columns:1fr}.display{font-size:clamp(42px,13vw,72px)}.code{font-size:11px;padding:16px;box-shadow:8px 8px 0 #d7d4c9}}@media(prefers-reduced-motion:reduce){.slide,.progress{transition:none}}
+</style>
+</head>
+<body>
+<main class="deck" aria-live="polite">
+<section class="slide active">
+<header class="masthead"><span>kikuk.me / Technical SEO</span><span>01</span></header>
+<div class="content"><span class="kicker">Studi kasus website sendiri</span><h1 class="display">Gimana caranya Google <em>paham</em> isi portofolioku?</h1><p class="lead">Aku pakai JSON-LD untuk menjelaskan halaman, artikel, proyek, dan tutorial di website portofolioku.</p></div>
+<footer class="footer"><span>JSON-LD / Schema.org</span><span>Tekan →</span></footer>
+</section>
+
+<section class="slide">
+<header class="masthead"><span>Masalahnya</span><span>02</span></header>
+<div class="content split"><div><span class="kicker">Teks saja belum cukup</span><h2>Google bisa membaca halaman, tapi konteksnya belum tentu jelas.</h2><p>Mana profil pemilik situs? Mana artikel, proyek, atau tutorial? HTML biasa belum menjelaskan semua hubungan itu secara tegas.</p></div><div class="schema-grid"><div class="schema-cell"><b>TechArticle</b><span>Menandai halaman sebagai artikel teknis.</span></div><div class="schema-cell"><b>Person</b><span>Menjelaskan identitas pemilik dan penulis.</span></div><div class="schema-cell"><b>Course</b><span>Menjelaskan struktur tutorial.</span></div><div class="schema-cell"><b>BreadcrumbList</b><span>Menjelaskan posisi halaman.</span></div><div class="schema-cell"><b>WebSite</b><span>Menjelaskan identitas kikuk.me.</span></div></div></div>
+<footer class="footer"><span>Schema memperjelas konteks data</span><span>02 / 10</span></footer>
+</section>
+
+<section class="slide">
+<header class="masthead"><span>Bedanya apa?</span><span>03</span></header>
+<div class="content split"><div><div class="big-number">3</div><h2>hal yang sering dianggap sama.</h2></div><ul class="checklist"><li><b>Meta tag</b><br><span class="note">Memberi informasi dasar tentang halaman.</span></li><li><b>Open Graph</b><br><span class="note">Mengatur tampilan tautan saat dibagikan.</span></li><li><b>JSON-LD</b><br><span class="note">Menjelaskan jenis dan hubungan data kepada mesin.</span></li><li><b>Catatan penting</b><br><span class="note">Schema bukan jalan pintas untuk menaikkan peringkat.</span></li></ul></div>
+<footer class="footer"><span>Mirip, tapi tugasnya berbeda</span><span>03 / 10</span></footer>
+</section>
+
+<section class="slide">
+<header class="masthead"><span>Implementasi di proyek</span><span>04</span></header>
+<div class="content stack"><span class="kicker">Next.js + kikuk.me</span><h2>Metadata dan schema mengambil data dari halaman yang sama.</h2><div class="pipeline"><div class="step"><span>01</span><b>Database</b></div><div class="step"><span>02</span><b>Halaman Next.js</b></div><div class="step"><span>03</span><b>Metadata</b></div><div class="step"><span>04</span><b>JSON-LD</b></div><div class="step"><span>05</span><b>Google</b></div></div><p>Judul, ringkasan, gambar, tanggal, dan penulis dipakai ulang untuk tampilan halaman, metadata, dan structured data.</p></div>
+<footer class="footer"><span>Satu sumber data untuk halaman dan schema</span><span>04 / 10</span></footer>
+</section>
+
+<section class="slide">
+<header class="masthead"><span>TechArticle</span><span>05</span></header>
+<div class="content split"><div><h2>Mulai dari identitas artikelnya.</h2><p>Tentukan jenis halaman, judul, ringkasan, gambar, dan tanggal terbit dalam satu struktur yang jelas.</p></div><pre class="code">{
+  <span class="key">"@context"</span>: <span class="value">"https://schema.org"</span>,
+  <span class="key">"@type"</span>: <span class="value">"TechArticle"</span>,
+  <span class="key">"headline"</span>: <span class="value">"Judul tutorial"</span>,
+  <span class="key">"description"</span>: <span class="value">"Ringkasan tutorial"</span>,
+  <span class="key">"image"</span>: <span class="value">"https://kikuk.me/cover.jpg"</span>,
+  <span class="key">"datePublished"</span>: <span class="value">"2026-09-04T08:00:00+07:00"</span>
+}</pre></div>
+<footer class="footer"><span>Contoh JSON-LD murni</span><span>05 / 10</span></footer>
+</section>
+
+<section class="slide">
+<header class="masthead"><span>Artikel dan tutorial</span><span>06</span></header>
+<div class="content split"><pre class="code"><span class="key">"author"</span>: {
+  <span class="key">"@type"</span>: <span class="value">"Person"</span>,
+  <span class="key">"name"</span>: <span class="value">"Kikuk"</span>,
+  <span class="key">"url"</span>: <span class="value">"https://kikuk.me"</span>
+},
+<span class="key">"isPartOf"</span>: {
+  <span class="key">"@type"</span>: <span class="value">"Course"</span>,
+  <span class="key">"name"</span>: <span class="value">"Judul Tutorial"</span>,
+  <span class="key">"url"</span>: <span class="value">"https://kikuk.me/tutorial/contoh"</span>
+}</pre><div><span class="kicker">Hubungan antar-data</span><h2>Chapter tutorial bukan halaman yang berdiri sendiri.</h2><p>Penulis ditandai sebagai Person, lalu artikel teknis dihubungkan ke tutorial induknya lewat Course.</p></div></div>
+<footer class="footer"><span>TechArticle + Course</span><span>06 / 10</span></footer>
+</section>
+
+<section class="slide">
+<header class="masthead"><span>BreadcrumbList</span><span>07</span></header>
+<div class="content stack"><h2>Breadcrumb menjelaskan posisi artikel di dalam situs.</h2><div class="pipeline" style="grid-template-columns:1fr 60px 1fr 60px 1.4fr"><div class="step"><span>01</span><b>Beranda</b></div><div style="align-self:center;text-align:center;font-size:36px">→</div><div class="step"><span>02</span><b>Kategori</b></div><div style="align-self:center;text-align:center;font-size:36px">→</div><div class="step"><span>03</span><b>Judul artikel</b></div></div><p>Breadcrumb yang terlihat di halaman dan yang dikirim lewat JSON-LD sebaiknya memakai urutan yang sama.</p></div>
+<footer class="footer"><span>BreadcrumbList + ListItem</span><span>07 / 10</span></footer>
+</section>
+
+<section class="slide">
+<header class="masthead"><span>Pasang di halaman</span><span>08</span></header>
+<div class="content split"><div><span class="kicker">Tempat JSON-LD</span><h2>Masukkan strukturnya ke dalam tag script.</h2><p>Gunakan tipe application/ld+json. Tag ini biasanya diletakkan di bagian head halaman.</p></div><pre class="code">&lt;script type=<span class="value">"application/ld+json"</span>&gt;
+{
+  <span class="key">"@context"</span>: <span class="value">"https://schema.org"</span>,
+  <span class="key">"@type"</span>: <span class="value">"TechArticle"</span>,
+  <span class="key">"headline"</span>: <span class="value">"Judul tutorial"</span>,
+  <span class="key">"author"</span>: {
+    <span class="key">"@type"</span>: <span class="value">"Person"</span>,
+    <span class="key">"name"</span>: <span class="value">"Kikuk"</span>
+  }
+}
+&lt;/script&gt;</pre></div>
+<footer class="footer"><span>application/ld+json</span><span>08 / 10</span></footer>
+</section>
+
+<section class="slide warning">
+<header class="masthead"><span>Tes keamanan sederhana</span><span>09</span></header>
+<div class="content split"><div><span class="kicker">Jangan berhenti di tampilannya</span><h2>Coba masukkan judul yang berusaha menutup tag script.</h2><p>Di tes ini, judul artikel sengaja diisi kode berbahaya. Hasil HTML kemudian dicek untuk memastikan kode itu tidak keluar sebagai script baru.</p></div><pre class="code">title: <span class="value">'Aman &lt;/script&gt;
+&lt;script&gt;alert(1)&lt;/script&gt;'</span>
+
+expect($html)
+  ->not
+  -><span class="fn">toContain</span>(
+    <span class="value">'&lt;/script&gt;&lt;script&gt;alert(1)'</span>
+  );</pre></div>
+<footer class="footer"><span>JsonLdEscapingTest.php:7</span><span>09 / 10</span></footer>
+</section>
+
+<section class="slide">
+<header class="masthead"><span>Checklist akhir</span><span>10</span></header>
+<div class="content split"><div><h2>Intinya: buat schema yang sesuai dengan isi halaman.</h2><p>Tidak perlu memasang semua jenis schema hanya karena tersedia.</p></div><ul class="checklist"><li>Pilih tipe schema yang sesuai.</li><li>Ambil data dari sumber yang sama dengan halaman.</li><li>Gunakan URL lengkap dan tanggal ISO 8601.</li><li>Jelaskan hubungan penulis dan penerbit.</li><li>Pastikan output JSON-LD aman.</li><li>Tes HTML yang benar-benar dikirim ke browser.</li></ul></div>
+<footer class="footer"><span>Schema apa yang pernah bikin kalian bingung?</span><span>10 / 10</span></footer>
+</section>
+</main>
+<nav class="controls" aria-label="Navigasi slide"><button id="prev" aria-label="Slide sebelumnya">←</button><button id="next" aria-label="Slide berikutnya">→</button></nav>
+<div class="progress" id="progress"></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];let current=0;
+function show(index){current=Math.max(0,Math.min(index,slides.length-1));slides.forEach((slide,i)=>{slide.classList.toggle('active',i===current);slide.setAttribute('aria-hidden',i!==current)});document.getElementById('progress').style.width=`${(current+1)/slides.length*100}%`;history.replaceState(null,'',`#${current+1}`)}
+function move(step){show(current+step)}
+document.getElementById('prev').addEventListener('click',()=>move(-1));document.getElementById('next').addEventListener('click',()=>move(1));
+document.addEventListener('keydown',event=>{if(['ArrowRight','PageDown',' '].includes(event.key)){event.preventDefault();move(1)}if(['ArrowLeft','PageUp'].includes(event.key)){event.preventDefault();move(-1)}if(event.key==='Home')show(0);if(event.key==='End')show(slides.length-1);if(event.key.toLowerCase()==='f')document.documentElement.requestFullscreen?.()});
+show(Math.max(0,Number(location.hash.slice(1))-1||0));
+</script>
+</body>
+</html>

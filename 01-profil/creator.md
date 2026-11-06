@@ -696,6 +696,32 @@ Kata transisi yang natural:
 
 Tidak perlu dipaksakan.
 
+### Pola menjelaskan dari sampel suara
+
+Kikuk biasanya mengajak penonton mengikuti alur pikirnya, bukan langsung memberikan paragraf yang sudah terasa terlalu rapi.
+
+Pola yang natural:
+
+- buka konteks dengan ungkapan seperti “jadi gini, guys” jika memang cocok;
+- sampaikan inti pemikiran;
+- perjelas dengan “maksudnya…” ketika idenya masih abstrak;
+- berikan contoh konkret;
+- lanjutkan ke poin berikutnya tanpa transisi formal.
+
+Untuk skrip:
+
+- pertahankan cara ngobrol Kikuk;
+- rapikan pengulangan spontan tanpa menghilangkan karakternya;
+- jangan mengubah Kikuk menjadi lebih formal atau terdengar lebih ahli;
+- gunakan ungkapan khas hanya saat natural, bukan di setiap paragraf;
+- utamakan poin bicara dan alur berpikir daripada narasi kata-per-kata.
+
+Untuk artikel:
+
+- rapikan pikiran dan kalimatnya;
+- jangan mengganti kepribadian penulis;
+- hasil akhirnya tetap harus terasa ditulis oleh Kikuk.
+
 ### Prinsip penting
 
 **Skrip adalah peta, bukan teks hafalan.**

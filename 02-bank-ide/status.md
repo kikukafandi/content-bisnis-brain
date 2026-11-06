@@ -28,6 +28,7 @@
 ## Draft belum siap rekam
 - [ ] Bikin Website Portofolio Pakai AI, Dipandu Programmer — konsep tersimpan; AI, contoh profil, dan platform publikasi belum ditentukan
 - [ ] Aku Nyolder Rangkaian Ini 3 Kali karena Satu Jalur Kelupaan — skrip long-form 6–8 menit selesai; hasil akhir motor dan detail percobaan kedua perlu divalidasi sebelum rekam
+- [ ] Vibe Coding yang Rapi Dimulai dari PRD, Bukan Prompt — outline long-form 6–8 menit selesai; contoh isi dokumen dan klaim penghematan token perlu divalidasi sebelum rekam
 
 ## Kandidat ide baru
 - [ ] Aku Bisa Ngoding, tapi Elektronika Bikin Aku Mulai dari Nol Lagi — perlu memilih momen kebingungan yang paling konkret
@@ -49,9 +50,13 @@
 - [ ] Kenapa Slide Presentasi Nggak Boleh Penuh Teks? — rekaman selesai; tinggal editing
 
 ## Outline siap rekam
+- [ ] Roadmap Belajar Embedded untuk Pemula — skrip long-form 8–10 menit selesai; project client disebut secara umum sebagai alat pendeteksi/IoT untuk menjaga kerahasiaan
 - [ ] Seri Menjelaskan Komputer Kuantum Tanpa Menyesatkan — enam skrip penuh dan visual player 24 adegan siap rekam; klaim status teknologi tetap diverifikasi ulang menjelang publikasi
 - [ ] AI Menghapus Semua Data Project-ku — skrip long-form 5–7 menit dan Shorts 45–60 detik selesai; fokus pada AI sebagai asisten, bukan autopilot
 - [ ] Core Web Vitals untuk Mahasiswa yang Baru Belajar SEO — materi dan skrip poin selesai; framing mahasiswa ke mahasiswa tanpa klaim ranking pasti naik
+
+## Bantu teman (bukan konten channel)
+- [ ] Video Promosi ProAkses untuk Calvin — rekaman layar horizontal dan vertikal selesai; tinggal voice over dan potong jadi 30 detik; lihat [[rekam-video-promosi-proakses]]
 
 ## Shorts belum dipanen
 - [ ] ESP32 Reset Setiap Wi-Fi Nyala — siap dikembangkan; penyebab teknis jangan diklaim sebelum terverifikasi
